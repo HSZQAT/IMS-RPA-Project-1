@@ -6,30 +6,8 @@ import java.util.ArrayList;
 
 public class ProductManager {
 
-	private ArrayList<Product> products = new ArrayList<Product>();
-
-	public void initialise() {
-
-		String query = "SELECT * FROM products";
-		ResultSet results = JDBCDriver.execQuery(query);
-
-		try {
-			while (results.next()) {
-
-				this.products.add(new Product(results.getInt("PID"), results.getString("name"),
-						results.getString("director"), results.getString("genre"), results.getString("release_date"),
-						results.getString("language"), results.getInt("age_rating"), results.getFloat("price")));
-
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 	public void create(Product p) {
 
-		this.products.add(p);
 		String query = "INSERT INTO products VALUES (" + p.getpID() + ", \"" + p.getName() + "\", \"" + p.getDirector()
 				+ "\", \"" + p.getGenre() + "\", \"" + p.getRelease_date() + "\", \"" + p.getLanguage() + "\", \""
 				+ p.getAge_rating() + "\"," + p.getPrice() + ")";
@@ -39,32 +17,54 @@ public class ProductManager {
 	}
 
 	public ArrayList<Product> read() {
+		ArrayList<Product> products = new ArrayList<Product>();
+		String query = "SELECT * FROM products";
+		ResultSet results = JDBCDriver.execQuery(query);
+
+		try {
+			while (results.next()) {
+
+				products.add(new Product(results.getInt("PID"), results.getString("name"),
+						results.getString("director"), results.getString("genre"), results.getString("release_date"),
+						results.getString("language"), results.getInt("age_rating"), results.getFloat("price")));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		return products;
 	}
 
 	public Product read(int pID) {
 
-		for (Product p : products) {
+		String query = "SELECT * FROM products WHERE PID = " + pID;
 
-			if (p.getpID() == pID) {
+		ResultSet results = JDBCDriver.execQuery(query);
 
-				return p;
+		Product resultProduct = new Product();
+
+		try {
+			while (results.next()) {
+
+				resultProduct.setpID(results.getInt("PID"));
+				resultProduct.setName(results.getString("name"));
+				resultProduct.setDirector(results.getString("director"));
+				resultProduct.setGenre(results.getString("genre"));
+				resultProduct.setRelease_date(results.getString("release_date"));
+				resultProduct.setLanguage(results.getString("language"));
+				resultProduct.setAge_rating(results.getInt("age_rating"));
+				resultProduct.setPrice(results.getFloat("price"));
+
 			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		System.out.println("Product ID doesn't exist.");
-		return null;
+		return resultProduct;
 	}
 
 	public void update(int pID, String name, String director) {
-
-		for (Product p : products) {
-			if (p.getpID() == pID) {
-
-				p.setName(name);
-				p.setDirector(director);
-
-			}
-		}
 
 		String query = "UPDATE products SET name = \"" + name + "\" , director = \"" + director + "\" WHERE PID = "
 				+ pID;
@@ -75,14 +75,6 @@ public class ProductManager {
 
 	public void update(int pID, float price) {
 
-		for (Product p : products) {
-			if (p.getpID() == pID) {
-
-				p.setPrice(price);
-
-			}
-		}
-
 		String query = "UPDATE products SET price = " + price + " WHERE PID = " + pID;
 		JDBCDriver.execUpdate(query);
 		System.out.println("Product " + pID + "'s price has been updated.");
@@ -90,14 +82,6 @@ public class ProductManager {
 	}
 
 	public void delete(int pID) {
-
-		for (Product p : products) {
-			if (p.getpID() == pID) {
-
-				this.products.remove(p);
-
-			}
-		}
 
 		String query = "DELETE FROM products WHERE PID = " + pID;
 		JDBCDriver.execUpdate(query);

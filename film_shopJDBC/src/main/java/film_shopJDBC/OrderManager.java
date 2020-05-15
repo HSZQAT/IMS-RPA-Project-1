@@ -6,28 +6,8 @@ import java.util.ArrayList;
 
 public class OrderManager {
 
-	private ArrayList<Order> orders = new ArrayList<Order>();
-
-	public void initialise() {
-
-		String query = "SELECT * FROM orders";
-		ResultSet results = JDBCDriver.execQuery(query);
-
-		try {
-			while (results.next()) {
-
-				this.orders.add(new Order(results.getInt("OID"), results.getInt("CID"), results.getFloat("total")));
-
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 	public void create(Order o) {
 
-		this.orders.add(o);
 		String query = "INSERT INTO orders VALUES ( " + o.getoID() + ", " + o.getcID() + ", " + o.getTotal() + " )";
 
 		JDBCDriver.execUpdate(query);
@@ -35,31 +15,48 @@ public class OrderManager {
 	}
 
 	public ArrayList<Order> read() {
+
+		ArrayList<Order> orders = new ArrayList<Order>();
+		String query = "SELECT * FROM orders";
+		ResultSet results = JDBCDriver.execQuery(query);
+
+		try {
+			while (results.next()) {
+
+				orders.add(new Order(results.getInt("OID"), results.getInt("CID"), results.getFloat("total")));
+
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return orders;
 	}
 
 	public Order read(int oID) {
 
-		for (Order o : orders) {
+		String query = "SELECT * FROM orders WHERE OID = " + oID;
 
-			if (o.getoID() == oID) {
+		ResultSet results = JDBCDriver.execQuery(query);
 
-				return o;
+		Order resultOrder = new Order();
+
+		try {
+			while (results.next()) {
+
+				resultOrder.setoID(results.getInt("OID"));
+				resultOrder.setcID(results.getInt("CID"));
+				resultOrder.setTotal(results.getFloat("total"));
+
 			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		System.out.println("Order ID doesn't exist.");
-		return null;
+		return resultOrder;
 	}
 
 	public void delete(int oID) {
-
-		for (Order o : orders) {
-			if (o.getoID() == oID) {
-
-				this.orders.remove(o);
-
-			}
-		}
 
 		String query = "DELETE FROM orders WHERE OID = " + oID;
 		JDBCDriver.execUpdate(query);

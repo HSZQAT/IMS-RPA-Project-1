@@ -8,9 +8,6 @@ public class App {
 		CustomerManager cM = new CustomerManager();
 		ProductManager pM = new ProductManager();
 		OrderManager oM = new OrderManager();
-		cM.initialise();
-		pM.initialise();
-		oM.initialise();
 
 //		cM.create(new Customer(6, "first_name", "last_name", "email", "address", "city", "postcode", 0, true));
 //		pM.create(new Product(7, "name", "director", "genre", "2000-01-01", "language", 18, 99.99f));
