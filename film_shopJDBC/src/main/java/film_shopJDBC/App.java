@@ -23,7 +23,7 @@ public class App {
 		System.out.println(cM.read().toString().replaceAll("[\\[\\]]", " ").replaceAll(",", "\n") + "\n");
 		System.out.println(pM.read().toString().replaceAll("[\\[\\]]", " ").replaceAll(",", "\n") + "\n");
 		System.out.println(oM.read().toString().replaceAll("[\\[\\]]", " ").replaceAll(",", "\n") + "\n");
-//		System.out.println(oM.read(5).toString());
+		System.out.println(oM.readMy(1).toString().replaceAll("[\\[\\]]", " ").replaceAll(",", "\n") + "\n");
 
 		JDBCDriver.close();
 
