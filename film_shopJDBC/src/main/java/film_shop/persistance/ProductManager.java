@@ -13,7 +13,6 @@ public class ProductManager {
 				+ p.getAge_rating() + "\"," + p.getPrice() + ")";
 
 		JDBCDriver.execUpdate(query);
-		System.out.println("New product entry added!");
 	}
 
 	public ArrayList<Product> read() {

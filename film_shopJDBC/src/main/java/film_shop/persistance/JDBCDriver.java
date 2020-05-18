@@ -58,7 +58,7 @@ public class JDBCDriver {
 
 	}
 
-	static void close() {
+	public static void close() {
 
 		try {
 			connection.close();
