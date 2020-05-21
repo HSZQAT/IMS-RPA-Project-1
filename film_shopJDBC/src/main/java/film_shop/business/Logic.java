@@ -10,9 +10,9 @@ import film_shop.user.Scan;
 
 public class Logic {
 
-	private static CustomerManager cM = new CustomerManager();
-	private static ProductManager pM = new ProductManager();
-	private static OrderManager oM = new OrderManager();
+	private CustomerManager cM = new CustomerManager();
+	private ProductManager pM = new ProductManager();
+	private OrderManager oM = new OrderManager();
 
 	public String viewAccounts() {
 
@@ -82,7 +82,7 @@ public class Logic {
 
 	}
 
-	public void createProduct() {
+	public String createProduct() {
 
 		int pID = (pM.read().get(pM.read().size() - 1).getpID() + 1);
 
@@ -105,12 +105,10 @@ public class Logic {
 
 		Product p1 = new Product(pID, name, director, genre, release_date, language, age_rating, price, loyalty_price);
 		pM.create(p1);
-		System.out.println("New product entry added!\n" + pM.read(p1.getpID()).toString() + "\n");
-		return;
-
+		return "New product entry added!\n" + pM.read(p1.getpID()).toString() + "\n";
 	}
 
-	public void createOrder() {
+	public String createOrder() {
 
 		int oID = (oM.read().get(oM.read().size() - 1).getoID() + 1);
 
@@ -124,8 +122,7 @@ public class Logic {
 
 		Order o1 = new Order(oID, cID, total);
 		oM.create(o1);
-		System.out.println("New order entry added!\n" + oM.read(o1.getoID()).toString() + "\n");
-		return;
+		return "New order entry added!\n" + oM.read(o1.getoID()).toString() + "\n";
 
 	}
 
@@ -152,7 +149,7 @@ public class Logic {
 		return total;
 	}
 
-	public void checkAccount() {
+	public String checkAccount() {
 
 		System.out.println("Please enter your customer ID:");
 		int cID = Scan.inputInt();
@@ -165,7 +162,7 @@ public class Logic {
 			}
 		}
 		System.out.println("");
-		System.out.println("Total order(s) cost: £" + calculateTotal(cID) + "\n");
+		return "Total order(s) cost: £" + calculateTotal(cID) + "\n";
 	}
 
 	public void updateAccount() {
@@ -277,7 +274,7 @@ public class Logic {
 
 	}
 
-	public void deleteAccount() {
+	public String deleteAccount() {
 
 		boolean again = true;
 		while (again) {
@@ -300,11 +297,10 @@ public class Logic {
 //								}
 //							}
 							cM.delete(cID);
-							System.out.println("Customer account #" + cID + " deleted.");
-							return;
+							return "Customer account #" + cID + " deleted.";
+
 						} else if (confirm == 2) {
-							System.out.println("Returning to main menu...");
-							return;
+							return "Returning to main menu...";
 						} else {
 							again2 = true;
 							System.out.println("Cannot confirm deletion. Please try again.");
@@ -315,10 +311,11 @@ public class Logic {
 			again = true;
 			System.out.println("Invalid Customer ID. Please try again.");
 		}
+		return null;
 
 	}
 
-	public void deleteProduct() {
+	public String deleteProduct() {
 
 		boolean again = true;
 		while (again) {
@@ -335,11 +332,9 @@ public class Logic {
 						int confirm = Scan.inputInt();
 						if (confirm == 1) {
 							pM.delete(pID);
-							System.out.println("Product #" + pID + " deleted.");
-							return;
+							return "Product #" + pID + " deleted.";
 						} else if (confirm == 2) {
-							System.out.println("Returning to main menu...");
-							return;
+							return "Returning to main menu...";
 						} else {
 							again2 = true;
 							System.out.println("Cannot confirm deletion. Please try again.");
@@ -350,9 +345,10 @@ public class Logic {
 			again = true;
 			System.out.println("Invalid Product ID. Please try again.");
 		}
+		return null;
 	}
 
-	public void deleteOrder() {
+	public String deleteOrder() {
 
 		boolean again = true;
 		while (again) {
@@ -369,11 +365,9 @@ public class Logic {
 						int confirm = Scan.inputInt();
 						if (confirm == 1) {
 							oM.delete(oID);
-							System.out.println("Order #" + oID + " deleted.");
-							return;
+							return "Order #" + oID + " deleted.";
 						} else if (confirm == 2) {
-							System.out.println("Returning to main menu...");
-							return;
+							return "Returning to main menu...";
 						} else {
 							again2 = true;
 							System.out.println("Cannot confirm deletion. Please try again.");
@@ -384,6 +378,7 @@ public class Logic {
 			again = true;
 			System.out.println("Invalid Order ID. Please try again.");
 		}
+		return null;
 
 	}
 

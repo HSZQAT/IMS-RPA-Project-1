@@ -66,7 +66,7 @@ public class UserMenu {
 
 			case "2":
 
-				logic.checkAccount();
+				System.out.println(logic.checkAccount());
 				break;
 
 			case "3":
@@ -76,7 +76,7 @@ public class UserMenu {
 
 			case "4":
 
-				logic.deleteAccount();
+				System.out.println(logic.deleteAccount());
 				break;
 
 			case "5":
@@ -84,11 +84,11 @@ public class UserMenu {
 				break;
 
 			case "6":
-				logic.createOrder();
+				System.out.println(logic.createOrder());
 				break;
 
 			case "7":
-				logic.deleteOrder();
+				System.out.println(logic.deleteOrder());
 				break;
 
 			case "return":
@@ -135,11 +135,11 @@ public class UserMenu {
 				break;
 
 			case "4":
-				logic.createProduct();
+				System.out.println(logic.createProduct());
 				break;
 
 			case "5":
-				logic.deleteProduct();
+				System.out.println(logic.deleteProduct());
 				break;
 
 			case "return":

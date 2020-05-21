@@ -1,39 +1,66 @@
 package film_shop.persistance;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.Test;
-
 class OrderManagerTest {
 
-	@Test
-	void testCreate() {
-		fail("Not yet implemented");
-	}
+	OrderManager oMTest = new OrderManager();
+	Order firstOrderTest = new Order(1, 1, 12.99f);
 
-	@Test
-	void testRead() {
-		fail("Not yet implemented");
-	}
+//	@Before
+//	public static void setUp() {
+//		JDBCDriver.connect();
+//	}
 
-	@Test
-	void testReadInt() {
-		fail("Not yet implemented");
-	}
+//	@Test
+//	void testCreate() {
+//		JDBCDriver.connect();
+//
+//		Order test = new Order(99, 99, 99.99f);
+//		oMTest.create(test);
+//		assertEquals("New order entry 99 added!", oMTest.create(test));
+//		System.out.println(oMTest.read(test.getoID()).toString());
+//
+//		JDBCDriver.close();
+//	}
 
-	@Test
-	void testReadMy() {
-		fail("Not yet implemented");
-	}
+//	@Test
+//	void testRead() {
+//		setUp();
+//
+//		assertNotNull(oMTest.read());
+//		assertEquals(firstOrderTest.toString(), oMTest.read().get(0).toString());
+//
+//		close();
+//	}
 
-	@Test
-	void testUpdate() {
-		fail("Not yet implemented");
-	}
+//	@Test
+//	void testReadInt() {
+//		setUp();
+//
+//		assertNotNull(oMTest.read(1));
+//		assertEquals(firstOrderTest.toString(), oMTest.read(1).toString());
+//		oMTest.create(test);
+//		assertEquals(test.toString(), oMTest.read(99).toString());
+//
+//		close();
+//	}
 
-	@Test
-	void testDelete() {
-		fail("Not yet implemented");
-	}
+//	@Test
+//	void testReadMy() {
+//		fail("Not yet implemented");
+//	}
+
+//	@Test
+//	void testDelete() {
+//		setUp();
+//
+//		assertEquals("Order 99 has been deleted.", oMTest.delete(99));
+//
+//		close();
+//	}
+
+//	@After
+//	public static void close() {
+//		JDBCDriver.close();
+//	}
 
 }

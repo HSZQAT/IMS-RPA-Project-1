@@ -6,12 +6,12 @@ import java.util.ArrayList;
 
 public class OrderManager {
 
-	public void create(Order o) {
+	public String create(Order o) {
 
 		String query = "INSERT INTO orders VALUES ( " + o.getoID() + ", " + o.getcID() + ", " + o.getTotal() + " )";
 
 		JDBCDriver.execUpdate(query);
-		System.out.println("New order entry added!");
+		return "New order entry " + o.getoID() + " added!";
 	}
 
 	public ArrayList<Order> read() {
@@ -83,11 +83,11 @@ public class OrderManager {
 
 	}
 
-	public void delete(int oID) {
+	public String delete(int oID) {
 
 		String query = "DELETE FROM orders WHERE OID = " + oID;
 		JDBCDriver.execUpdate(query);
-		System.out.println("Order " + oID + " has been deleted.");
+		return "Order " + oID + " has been deleted.";
 
 	}
 

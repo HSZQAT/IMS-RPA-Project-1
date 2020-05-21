@@ -91,11 +91,11 @@ public class ProductManager {
 
 	}
 
-	public void delete(int pID) {
+	public String delete(int pID) {
 
 		String query = "DELETE FROM products WHERE PID = " + pID;
 		JDBCDriver.execUpdate(query);
-		System.out.println("Product " + pID + " has been deleted.");
+		return "Product " + pID + " has been deleted.";
 
 	}
 
