@@ -10,7 +10,7 @@ public class ProductManager {
 
 		String query = "INSERT INTO products VALUES (" + p.getpID() + ", \"" + p.getName() + "\", \"" + p.getDirector()
 				+ "\", \"" + p.getGenre() + "\", \"" + p.getRelease_date() + "\", \"" + p.getLanguage() + "\", \""
-				+ p.getAge_rating() + "\"," + p.getPrice() + ")";
+				+ p.getAge_rating() + "\"," + p.getPrice() + "," + p.getLoyalty_price() + ")";
 
 		JDBCDriver.execUpdate(query);
 	}
@@ -25,7 +25,8 @@ public class ProductManager {
 
 				products.add(new Product(results.getInt("PID"), results.getString("name"),
 						results.getString("director"), results.getString("genre"), results.getString("release_date"),
-						results.getString("language"), results.getInt("age_rating"), results.getFloat("price")));
+						results.getString("language"), results.getInt("age_rating"), results.getFloat("price"),
+						results.getFloat("loyalty_price")));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -54,6 +55,7 @@ public class ProductManager {
 				resultProduct.setLanguage(results.getString("language"));
 				resultProduct.setAge_rating(results.getInt("age_rating"));
 				resultProduct.setPrice(results.getFloat("price"));
+				resultProduct.setLoyalty_price(results.getFloat("loyalty_price"));
 
 			}
 		} catch (SQLException e) {
@@ -74,7 +76,9 @@ public class ProductManager {
 
 	public void update(int pID, float price) {
 
-		String query = "UPDATE products SET price = " + price + " WHERE PID = " + pID;
+		float loyalty_price = (price * 0.9f);
+		String query = "UPDATE products SET price = " + price + ", loyalty_price = " + loyalty_price + " WHERE PID = "
+				+ pID;
 		JDBCDriver.execUpdate(query);
 		System.out.println("Product " + pID + "'s price has been updated.");
 

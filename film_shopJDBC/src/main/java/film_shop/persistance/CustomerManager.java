@@ -13,6 +13,7 @@ public class CustomerManager {
 				+ "\", \"" + c.getPostcode() + "\"," + c.getAge() + " , " + c.getLoyalty() + ")";
 
 		JDBCDriver.execUpdate(query);
+		System.out.println("Customer " + c.getcID() + " has been created.");
 	}
 
 	public ArrayList<Customer> read() {

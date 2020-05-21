@@ -5,6 +5,8 @@ import film_shop.persistance.JDBCDriver;
 
 public class UserMenu {
 
+	static Logic logic = new Logic();
+
 	public static void run() {
 
 		System.out.println("Welcome to Helena's Film Shop!");
@@ -51,7 +53,7 @@ public class UserMenu {
 		while (again) {
 
 			System.out.println(
-					"Please select a menu option:\n1) Create an account\n2) View your account\n3) Update your account\n4) Delete your account\n5) View all products\n6) Create an order\n7) Delete an order\n(To exit application type 'exit');");
+					"Please select a menu option:\n1) Create an account\n2) View your account\n3) Update your account\n4) Delete your account\n5) View all products\n6) Create an order\n7) Delete an order\n(To return to previous menu type 'return')\n(To exit application type 'exit');");
 
 			String choice = Scan.input();
 
@@ -59,35 +61,40 @@ public class UserMenu {
 
 			case "1":
 
-				Logic.createAccount();
+				System.out.println(logic.createAccount());
 				break;
 
 			case "2":
 
-				Logic.checkAccount();
+				logic.checkAccount();
 				break;
 
 			case "3":
 
-				Logic.updateAccount();
+				logic.updateAccount();
 				break;
 
 			case "4":
 
-				Logic.deleteAccount();
+				logic.deleteAccount();
 				break;
 
 			case "5":
-				Logic.viewProducts();
+				System.out.println(logic.viewProducts());
 				break;
 
 			case "6":
-				Logic.createOrder();
+				logic.createOrder();
 				break;
 
 			case "7":
-				Logic.deleteOrder();
+				logic.deleteOrder();
 				break;
+
+			case "return":
+
+				System.out.println("Returning to user menu...");
+				run();
 
 			case "exit":
 
@@ -111,29 +118,33 @@ public class UserMenu {
 		while (again) {
 
 			System.out.println(
-					"Please select an admin menu option:\n1) View all customer accounts\n2) View all products\n3) View all orders\n4) Add a product\n5) Delete a product\n(To exit application type 'exit')");
+					"Please select an admin menu option:\n1) View all customer accounts\n2) View all products\n3) View all orders\n4) Add a product\n5) Delete a product\n(To return to previous menu type 'return')\n(To exit application type 'exit')");
 			String adminChoice = Scan.input();
 			switch (adminChoice) {
 
 			case "1":
-				Logic.viewAccounts();
+				System.out.println(logic.viewAccounts());
 				break;
 
 			case "2":
-				Logic.viewProducts();
+				System.out.println(logic.viewProducts());
 				break;
 
 			case "3":
-				Logic.viewOrders();
+				System.out.println(logic.viewOrders());
 				break;
 
 			case "4":
-				Logic.createProduct();
+				logic.createProduct();
 				break;
 
 			case "5":
-				Logic.deleteProduct();
+				logic.deleteProduct();
 				break;
+
+			case "return":
+				System.out.println("Returning to user menu...");
+				run();
 
 			case "exit":
 				System.out.println("Exiting application. Have a nice day!");

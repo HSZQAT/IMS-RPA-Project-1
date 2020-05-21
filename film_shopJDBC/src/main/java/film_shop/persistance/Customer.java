@@ -113,4 +113,70 @@ public class Customer {
 				+ " | " + getCity() + " | " + getPostcode() + " | " + getAge() + " | " + getLoyalty();
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Customer other = (Customer) obj;
+		if (address == null) {
+			if (other.address != null) {
+				return false;
+			}
+		} else if (!address.equals(other.address)) {
+			return false;
+		}
+		if (age != other.age) {
+			return false;
+		}
+		if (cID != other.cID) {
+			return false;
+		}
+		if (city == null) {
+			if (other.city != null) {
+				return false;
+			}
+		} else if (!city.equals(other.city)) {
+			return false;
+		}
+		if (email == null) {
+			if (other.email != null) {
+				return false;
+			}
+		} else if (!email.equals(other.email)) {
+			return false;
+		}
+		if (first_name == null) {
+			if (other.first_name != null) {
+				return false;
+			}
+		} else if (!first_name.equals(other.first_name)) {
+			return false;
+		}
+		if (last_name == null) {
+			if (other.last_name != null) {
+				return false;
+			}
+		} else if (!last_name.equals(other.last_name)) {
+			return false;
+		}
+		if (loyalty != other.loyalty) {
+			return false;
+		}
+		if (postcode == null) {
+			if (other.postcode != null) {
+				return false;
+			}
+		} else if (!postcode.equals(other.postcode)) {
+			return false;
+		}
+		return true;
+	}
+
 }

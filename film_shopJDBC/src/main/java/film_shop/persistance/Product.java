@@ -10,6 +10,7 @@ public class Product {
 	private String language;
 	private int age_rating;
 	private float price;
+	private float loyalty_price;
 
 	public Product() {
 
@@ -26,6 +27,21 @@ public class Product {
 		this.language = language;
 		this.age_rating = age_rating;
 		this.price = price;
+		loyalty_price = (price * 0.9f);
+	}
+
+	public Product(int pID, String name, String director, String genre, String release_date, String language,
+			int age_rating, float price, float loyalty_price) {
+		super();
+		this.pID = pID;
+		this.name = name;
+		this.director = director;
+		this.genre = genre;
+		this.release_date = release_date;
+		this.language = language;
+		this.age_rating = age_rating;
+		this.price = price;
+		this.loyalty_price = loyalty_price;
 	}
 
 	public int getpID() {
@@ -92,10 +108,18 @@ public class Product {
 		this.price = price;
 	}
 
+	public float getLoyalty_price() {
+		return loyalty_price;
+	}
+
+	public void setLoyalty_price(float loyalty_price) {
+		this.loyalty_price = loyalty_price;
+	}
+
 	@Override
 	public String toString() {
 		return getpID() + " | " + getName() + " | " + getDirector() + " | " + getGenre() + " | " + getRelease_date()
-				+ " | " + getLanguage() + " | " + getAge_rating() + " |  £" + getPrice();
+				+ " | " + getLanguage() + " | " + getAge_rating() + " |  £" + getPrice() + " |  £" + getLoyalty_price();
 	}
 
 }

@@ -14,34 +14,44 @@ public class Logic {
 	private static ProductManager pM = new ProductManager();
 	private static OrderManager oM = new OrderManager();
 
-	public static void viewAccounts() {
+	public String viewAccounts() {
 
-		System.out.println(cM.read().toString().replaceAll("[\\[\\]]", " ").replaceAll(",", "\n") + "\n");
-
-	}
-
-	public static void viewProducts() {
-
-		System.out.println(pM.read().toString().replaceAll("[\\[\\]]", " ").replaceAll(",", "\n") + "\n");
+//		System.out.println(cM.read().toString().replaceAll("[\\[\\]]", " ").replaceAll(",", "\n") + "\n");
+		return cM.read().toString().replaceAll("[\\[\\]]", " ").replaceAll(",", "\n") + "\n";
 
 	}
 
-	public static void viewOrders() {
+	public String viewProducts() {
 
-		System.out.println(oM.read().toString().replaceAll("[\\[\\]]", " ").replaceAll(",", "\n") + "\n");
+//		System.out.println(pM.read().toString().replaceAll("[\\[\\]]", " ").replaceAll(",", "\n") + "\n");
+		return pM.read().toString().replaceAll("[\\[\\]]", " ").replaceAll(",", "\n") + "\n";
 
 	}
 
-	public static void createAccount() {
+	public String viewOrders() {
 
-		System.out.println("Please enter your customer ID:");
-		int cID = Scan.inputInt();
+//		System.out.println(oM.read().toString().replaceAll("[\\[\\]]", " ").replaceAll(",", "\n") + "\n");
+		return oM.read().toString().replaceAll("[\\[\\]]", " ").replaceAll(",", "\n") + "\n";
+
+	}
+
+	public String createAccount() {
+
+		int cID = (cM.read().get(cM.read().size() - 1).getcID() + 1);
+
+		System.out.println("Customer ID #" + cID + ":");
 		System.out.println("Please enter your first name:");
 		String first_name = Scan.input();
 		System.out.println("Please enter your last name:");
 		String last_name = Scan.input();
 		System.out.println("Please enter your email:");
 		String email = Scan.input();
+		for (Customer c : cM.read()) {
+			if (email.equals(c.getEmail())) {
+				System.out.println("Email already in use, please enter a new email.");
+				email = Scan.input();
+			}
+		}
 		System.out.println("Please enter your address:");
 		String address = Scan.input();
 		System.out.println("Please enter your city:");
@@ -50,26 +60,33 @@ public class Logic {
 		String postcode = Scan.input();
 		System.out.println("Please enter your age:");
 		int age = Scan.inputInt();
-		System.out.println("Please enter your loyalty status (Y/N):");
-		String loyalty = Scan.input();
-		boolean loyalBool;
-		if (loyalty == "Y") {
-			loyalBool = true;
-		} else {
-			loyalBool = false;
+		boolean loyalBool = false;
+		boolean again = true;
+		while (again) {
+			again = false;
+			System.out
+					.println("Would you like to sign up to our loyalty scheme? (Receive 10% discount)\n1) Yes!\n2) No");
+			int loyalty = Scan.inputInt();
+			if (loyalty == 1) {
+				loyalBool = true;
+			} else if (loyalty == 2) {
+				loyalBool = false;
+			} else {
+				again = true;
+				System.out.println("Invalid selection. Please try again.");
+			}
 		}
-
 		Customer c1 = new Customer(cID, first_name, last_name, email, address, city, postcode, age, loyalBool);
 		cM.create(c1);
-		System.out.println("New customer entry added!\n" + cM.read(c1.getcID()).toString() + "\n");
-		return;
+		return "New customer entry added!\n" + cM.read(c1.getcID()).toString() + "\n";
 
 	}
 
-	public static void createProduct() {
+	public void createProduct() {
 
-		System.out.println("Please enter a new product ID:");
-		int pID = Scan.inputInt();
+		int pID = (pM.read().get(pM.read().size() - 1).getpID() + 1);
+
+		System.out.println("Product ID #" + pID + ":");
 		System.out.println("Please enter film name:");
 		String name = Scan.input();
 		System.out.println("Please enter film's director:");
@@ -80,27 +97,30 @@ public class Logic {
 		String release_date = Scan.input();
 		System.out.println("Please enter film's language:");
 		String language = Scan.input();
-		System.out.println("Please enter film'ss age rating:");
+		System.out.println("Please enter film's age rating:");
 		int age_rating = Scan.inputInt();
 		System.out.println("Please enter film's price:");
 		float price = Scan.inputFloat();
+		float loyalty_price = (price * 0.9f);
 
-		Product p1 = new Product(pID, name, director, genre, release_date, language, age_rating, price);
+		Product p1 = new Product(pID, name, director, genre, release_date, language, age_rating, price, loyalty_price);
 		pM.create(p1);
 		System.out.println("New product entry added!\n" + pM.read(p1.getpID()).toString() + "\n");
 		return;
 
 	}
 
-	public static void createOrder() {
+	public void createOrder() {
 
-		System.out.println("Please enter a new order ID:");
-		int oID = Scan.inputInt();
+		int oID = (oM.read().get(oM.read().size() - 1).getoID() + 1);
+
+		System.out.println("Order ID #" + oID + ":");
 		System.out.println("Please enter your customer ID:");
 		int cID = Scan.inputInt();
+		System.out.println(pM.read().toString().replaceAll("[\\[\\]]", " ").replaceAll(",", "\n") + "\n");
 		System.out.println("Please enter the product ID you want to order:");
 		int pID = Scan.inputInt();
-		float total = returnPrice(pID);
+		float total = returnPrice(cID, pID);
 
 		Order o1 = new Order(oID, cID, total);
 		oM.create(o1);
@@ -109,23 +129,46 @@ public class Logic {
 
 	}
 
-	public static float returnPrice(int pID) {
+	public float returnPrice(int cID, int pID) {
 
-		float price = pM.read(pID).getPrice();
+		int loyalty = cM.read(cID).getLoyalty();
+		float price;
+		if (loyalty == 1) {
+			price = pM.read(pID).getLoyalty_price();
+		} else {
+			price = pM.read(pID).getPrice();
+		}
 		return price;
-
 	}
 
-	public static void checkAccount() {
+	public float calculateTotal(int cID) {
+
+		float total = 0.0f;
+		for (Order o : oM.read()) {
+			if (o.getcID() == cID) {
+				total = total + o.getTotal();
+			}
+		}
+		return total;
+	}
+
+	public void checkAccount() {
 
 		System.out.println("Please enter your customer ID:");
 		int cID = Scan.inputInt();
 
 		System.out.println(cM.read(cID).toString() + "\n");
-
+		System.out.println("Your orders:");
+		for (Order o : oM.read()) {
+			if (o.getcID() == cID) {
+				System.out.println(oM.read(o.getoID()).toString());
+			}
+		}
+		System.out.println("");
+		System.out.println("Total order(s) cost: £" + calculateTotal(cID) + "\n");
 	}
 
-	public static void updateAccount() {
+	public void updateAccount() {
 
 		System.out.println("Which account would you like to edit?");
 		int cID = Scan.inputInt();
@@ -158,7 +201,7 @@ public class Logic {
 				String email = Scan.input();
 
 				cM.update(cID, email);
-				System.out.println("Email updated!" + cM.read(cID).toString() + "\n");
+				System.out.println("Email updated!\n" + cM.read(cID).toString() + "\n");
 				return;
 
 			case "3":
@@ -171,21 +214,52 @@ public class Logic {
 				String postcode = Scan.input();
 
 				cM.update(cID, address, city, postcode);
-				System.out.println("Address updated!" + cM.read(cID).toString() + "\n");
+				System.out.println("Address updated!\n" + cM.read(cID).toString() + "\n");
 				return;
 
 			case "4":
 
-				System.out.println("Joined loyalty program? (Y/N): \n");
-				String loyalty = Scan.input();
+				Customer c = cM.read(cID);
 				boolean loyalBool;
-				if (loyalty == "Y") {
-					loyalBool = true;
+				if (c.getLoyalty() == 1) {
+					boolean againUnsub = true;
+					while (againUnsub) {
+						againUnsub = false;
+						System.out.println(
+								"Unsubscribe from loyalty scheme?:\n1) Unsubscribe\n2) No, keep my 10% discount!");
+						int loyalty = Scan.inputInt();
+						if (loyalty == 1) {
+							loyalBool = false;
+							cM.update(cID, loyalBool);
+						} else if (loyalty == 2) {
+							loyalBool = true;
+							cM.update(cID, loyalBool);
+						} else {
+							againUnsub = true;
+							System.out.println("Invalid choice, please try again.");
+						}
+					}
 				} else {
-					loyalBool = false;
+					boolean againSub = true;
+					while (againSub) {
+						againSub = false;
+						System.out.println(
+								"Subscribe to loyalty scheme? (10% discount on products):\n1) Subscribe!\n2) No thanks");
+						int loyalty = Scan.inputInt();
+						if (loyalty == 1) {
+							loyalBool = true;
+							cM.update(cID, loyalBool);
+						} else if (loyalty == 2) {
+							loyalBool = false;
+							cM.update(cID, loyalBool);
+						} else {
+							againSub = true;
+							System.out.println("Invalid choice, please try again.");
+						}
+					}
 				}
-				cM.update(cID, loyalBool);
-				System.out.println("Loyalty updated!" + cM.read(cID).toString() + "\n");
+
+				System.out.println("Loyalty updated!\n" + cM.read(cID).toString() + "\n");
 				break;
 
 			case "return":
@@ -203,62 +277,113 @@ public class Logic {
 
 	}
 
-	public static void deleteAccount() {
+	public void deleteAccount() {
 
-		System.out.println("Please enter your customer ID:");
-		int cID = Scan.inputInt();
-
-		System.out.println("Are you sure you want to delete customer account #" + cID + "?\n1) Yes\n2) No\n");
-
-		int confirm = Scan.inputInt();
-
-		if (confirm == 1) {
-			cM.delete(cID);
-			System.out.println("Customer account #" + cID + " deleted.");
-		} else if (confirm == 2) {
-			System.out.println("Returning to main menu...");
-		} else {
-			System.out.println("Cannot confirm input. Returning to main menu...");
+		boolean again = true;
+		while (again) {
+			again = false;
+			System.out.println("Please enter your customer ID:");
+			int cID = Scan.inputInt();
+			for (Customer c : cM.read()) {
+				if (c.getcID() == cID) {
+					boolean again2 = true;
+					while (again2) {
+						again2 = false;
+						System.out.println(
+								"Are you sure you want to delete customer account #" + cID + "?\n1) Yes\n2) No\n");
+						int confirm = Scan.inputInt();
+						if (confirm == 1) {
+//							List<Order> toDeleteOrders = new ArrayList<Order>();
+//							for (Order o : oM.read()) {
+//								if (o.getcID() == cID) {
+//									toDeleteOrders.add(o);
+//								}
+//							}
+//							
+							cM.delete(cID);
+							System.out.println("Customer account #" + cID + " deleted.");
+							return;
+						} else if (confirm == 2) {
+							System.out.println("Returning to main menu...");
+							return;
+						} else {
+							again2 = true;
+							System.out.println("Cannot confirm deletion. Please try again.");
+						}
+					}
+				}
+			}
+			again = true;
+			System.out.println("Invalid Customer ID. Please try again.");
 		}
 
 	}
 
-	public static void deleteProduct() {
+	public void deleteProduct() {
 
-		System.out.println("Please enter the product ID:");
-		int pID = Scan.inputInt();
+		boolean again = true;
+		while (again) {
+			again = false;
+			System.out.println("Please enter product ID:");
+			int pID = Scan.inputInt();
+			for (Product p : pM.read()) {
+				if (p.getpID() == pID) {
+					System.out.println("Are you sure you want to delete product #" + pID + "?\n1) Yes\n2) No\n");
 
-		System.out.println("Are you sure you want to delete product #" + pID + "?\n1) Yes\n2) No\n");
-
-		int confirm = Scan.inputInt();
-
-		if (confirm == 1) {
-			pM.delete(pID);
-			System.out.println("Product #" + pID + " deleted.");
-		} else if (confirm == 2) {
-			System.out.println("Returning to main menu...");
-		} else {
-			System.out.println("Cannot confirm input. Returning to main menu...");
+					boolean again2 = true;
+					while (again2) {
+						again2 = false;
+						int confirm = Scan.inputInt();
+						if (confirm == 1) {
+							pM.delete(pID);
+							System.out.println("Product #" + pID + " deleted.");
+							return;
+						} else if (confirm == 2) {
+							System.out.println("Returning to main menu...");
+							return;
+						} else {
+							again2 = true;
+							System.out.println("Cannot confirm deletion. Please try again.");
+						}
+					}
+				}
+			}
+			again = true;
+			System.out.println("Invalid Product ID. Please try again.");
 		}
-
 	}
 
-	public static void deleteOrder() {
+	public void deleteOrder() {
 
-		System.out.println("Please enter the order ID:");
-		int oID = Scan.inputInt();
+		boolean again = true;
+		while (again) {
+			again = false;
+			System.out.println("Please enter order ID:");
+			int oID = Scan.inputInt();
+			for (Order o : oM.read()) {
+				if (o.getoID() == oID) {
+					System.out.println("Are you sure you want to delete order #" + oID + "?\n1) Yes\n2) No\n");
 
-		System.out.println("Are you sure you want to delete order #" + oID + "?\n1) Yes\n2) No\n");
-
-		int confirm = Scan.inputInt();
-
-		if (confirm == 1) {
-			oM.delete(oID);
-			System.out.println("Order #" + oID + " deleted.");
-		} else if (confirm == 2) {
-			System.out.println("Returning to main menu...");
-		} else {
-			System.out.println("Cannot confirm input. Returning to main menu...");
+					boolean again2 = true;
+					while (again2) {
+						again2 = false;
+						int confirm = Scan.inputInt();
+						if (confirm == 1) {
+							oM.delete(oID);
+							System.out.println("Order #" + oID + " deleted.");
+							return;
+						} else if (confirm == 2) {
+							System.out.println("Returning to main menu...");
+							return;
+						} else {
+							again2 = true;
+							System.out.println("Cannot confirm deletion. Please try again.");
+						}
+					}
+				}
+			}
+			again = true;
+			System.out.println("Invalid Order ID. Please try again.");
 		}
 
 	}
