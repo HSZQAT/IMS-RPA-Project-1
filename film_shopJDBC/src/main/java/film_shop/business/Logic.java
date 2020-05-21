@@ -299,7 +299,6 @@ public class Logic {
 //									toDeleteOrders.add(o);
 //								}
 //							}
-//							
 							cM.delete(cID);
 							System.out.println("Customer account #" + cID + " deleted.");
 							return;

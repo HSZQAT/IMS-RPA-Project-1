@@ -1,49 +1,69 @@
 package film_shop.persistance;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 
 class CustomerManagerTest {
 
+	CustomerManager cMTest = new CustomerManager();
+	Customer test = new Customer(99, "test", "test", "test", "test", "test", "test", 99, false);
+	Customer arnieTest = new Customer(1, "Arnold", "Schwartz", "gettothechopper@skynet.com", "15 Twins Lane",
+			"California", "CA4 8FL", 72, true); // same as CID entry 1
+
+	@BeforeClass
+	public static void setUp() {
+		JDBCDriver.connect();
+	}
+
 	@Test
 	void testCreate() {
-		fail("Not yet implemented");
+		setUp();
+		assertEquals("Customer 99 has been created.", cMTest.create(test));
+		Customer emptyTest = new Customer();
+		assertEquals("Empty customer entry cannot be added.", cMTest.create(emptyTest));
+		assertTrue(cMTest.read().contains(test));
+		close();
 	}
 
 	@Test
 	void testRead() {
-		fail("Not yet implemented");
+		setUp();
+		assertNotNull(cMTest.read());
+		assertTrue(cMTest.read().contains(arnieTest));
+//		System.out.println(test.toString());
+//		System.out.println(cMTest.read(99).toString());
+//		assertTrue(cMTest.read().contains(test)); // checks for CID entry 99 added in create test.
+		close();
 	}
 
 	@Test
 	void testReadInt() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testUpdateIntStringString() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testUpdateIntString() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testUpdateIntStringStringString() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testUpdateIntBoolean() {
-		fail("Not yet implemented");
+		setUp();
+		assertNotNull(cMTest.read(99));
+		assertTrue(cMTest.read().contains(arnieTest));
+//		assertEquals(test, cMTest.read(99));
+		close();
 	}
 
 	@Test
 	void testDelete() {
-		fail("Not yet implemented");
+		setUp();
+		System.out.println(cMTest.read(99).toString());
+		assertTrue(cMTest.read().contains(test));
+		assertNotNull(cMTest.delete(99));
+		assertFalse(cMTest.read().contains(test));
+		close();
+	}
+
+	@AfterClass
+	public static void close() {
+		JDBCDriver.close();
 	}
 
 }

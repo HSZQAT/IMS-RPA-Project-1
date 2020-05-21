@@ -6,13 +6,20 @@ import java.util.ArrayList;
 
 public class ProductManager {
 
-	public void create(Product p) {
+	public String create(Product p) {
 
-		String query = "INSERT INTO products VALUES (" + p.getpID() + ", \"" + p.getName() + "\", \"" + p.getDirector()
-				+ "\", \"" + p.getGenre() + "\", \"" + p.getRelease_date() + "\", \"" + p.getLanguage() + "\", \""
-				+ p.getAge_rating() + "\"," + p.getPrice() + "," + p.getLoyalty_price() + ")";
+		if (p.getpID() == 0) {
+			return "Empty product entry cannot be added.";
+		} else {
 
-		JDBCDriver.execUpdate(query);
+			String query = "INSERT INTO products VALUES (" + p.getpID() + ", \"" + p.getName() + "\", \""
+					+ p.getDirector() + "\", \"" + p.getGenre() + "\", \"" + p.getRelease_date() + "\", \""
+					+ p.getLanguage() + "\", \"" + p.getAge_rating() + "\"," + p.getPrice() + "," + p.getLoyalty_price()
+					+ ")";
+
+			JDBCDriver.execUpdate(query);
+			return "Product " + p.getpID() + " has been created.";
+		}
 	}
 
 	public ArrayList<Product> read() {

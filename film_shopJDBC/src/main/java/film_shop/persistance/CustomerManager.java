@@ -6,14 +6,19 @@ import java.util.ArrayList;
 
 public class CustomerManager {
 
-	public void create(Customer c) {
+	public String create(Customer c) {
 
-		String query = "INSERT INTO customer VALUES (" + c.getcID() + ", \"" + c.getFirst_name() + "\", \""
-				+ c.getLast_name() + "\", \"" + c.getEmail() + "\", \"" + c.getAddress() + "\", \"" + c.getCity()
-				+ "\", \"" + c.getPostcode() + "\"," + c.getAge() + " , " + c.getLoyalty() + ")";
+		if (c.getcID() == 0) {
+			return "Empty customer entry cannot be added.";
+		} else {
 
-		JDBCDriver.execUpdate(query);
-		System.out.println("Customer " + c.getcID() + " has been created.");
+			String query = "INSERT INTO customer VALUES (" + c.getcID() + ", \"" + c.getFirst_name() + "\", \""
+					+ c.getLast_name() + "\", \"" + c.getEmail() + "\", \"" + c.getAddress() + "\", \"" + c.getCity()
+					+ "\", \"" + c.getPostcode() + "\"," + c.getAge() + " , " + c.getLoyalty() + ")";
+
+			JDBCDriver.execUpdate(query);
+			return "Customer " + c.getcID() + " has been created.";
+		}
 	}
 
 	public ArrayList<Customer> read() {
@@ -106,11 +111,11 @@ public class CustomerManager {
 
 	}
 
-	public void delete(int cID) {
+	public String delete(int cID) {
 
 		String query = "DELETE FROM customer WHERE CID = " + cID;
 		JDBCDriver.execUpdate(query);
-		System.out.println("Customer " + cID + " has been deleted.");
+		return "Customer " + cID + " has been deleted.";
 
 	}
 
