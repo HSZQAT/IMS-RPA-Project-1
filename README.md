@@ -2,7 +2,7 @@
 RPA course project 1. Implent an inventory management system using Java, MYSQL and more.
 
 When looking at code use:
--  	film_shop for up to date files
+-  	IMS-RPA-Project-1/film_shopJDBC/src/main/java/film_shop/
 
 When looking at code, for test classes in Persistence layer use:
 - CustomerManagerTest
