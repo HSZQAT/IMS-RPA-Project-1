@@ -8,10 +8,15 @@ public class OrderManager {
 
 	public String create(Order o) {
 
-		String query = "INSERT INTO orders VALUES ( " + o.getoID() + ", " + o.getcID() + ", " + o.getTotal() + " )";
+		if (o.getoID() == 0) {
+			return "Empty order entry cannot be added.";
+		} else {
 
-		JDBCDriver.execUpdate(query);
-		return "New order entry " + o.getoID() + " added!";
+			String query = "INSERT INTO orders VALUES ( " + o.getoID() + ", " + o.getcID() + ", " + o.getTotal() + " )";
+
+			JDBCDriver.execUpdate(query);
+			return "New order entry " + o.getoID() + " added!";
+		}
 	}
 
 	public ArrayList<Order> read() {
